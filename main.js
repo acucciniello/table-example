@@ -1,19 +1,19 @@
 var xhr = require('xhr')
 
 function getNews() {
-  xhr.get('/', function (err, res) {
+  xhr.get('/getNews', function (err, res) {
     if (err) {
       return console.log(err)
     }
-    // console.log(res)
-    console.log('hello')
-    var articles = res.articles
+    var response = JSON.parse(res.body)
+    var articles = response.articles
     createTable(articles)
   })
 }
 
+window.getNews = getNews
+
 function createTable (articles) {
-  console.log(articles.length)
   var body = document.getElementsByTagName('body')[0]
   var table = document.getElementById('articles')
   var tableBody = document.createElement('tbody')
@@ -29,6 +29,5 @@ function createTable (articles) {
   }
   table.appendChild(tableBody)
   body.appendChild(table)
-  console.log(body)
   return
 }

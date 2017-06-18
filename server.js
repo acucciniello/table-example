@@ -8,23 +8,22 @@ app.listen(3000, function () {
   console.log('listening')
 })
 
-app.use(express.static('bundle.js'))
+app.use(express.static('public/'))
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'))
-})
-
-app.get('/', function (req, res) {
+app.get('/getNews', function (req, res) {
   var source = 'hacker-news'
   var sortBy = 'latest'
   var url = formatURL(source, sortBy)
   got(url)
     .then(response => {
-      // console.log(response.body)
-      res.json(response.body)
+      res.send(response.body)
     })
     .catch(error => {
       console.log(error.response.body)
       res.end('we failed')
     })
+})
+
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'index.html'))
 })
